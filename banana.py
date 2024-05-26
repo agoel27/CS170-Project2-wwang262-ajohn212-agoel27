@@ -30,7 +30,7 @@ def forward_selection(numFeatures):
         features, maxVal = pick_best(features)
         print(features, maxVal)
 
-def backward_selection(numFeatures):
+def backward_elimination(numFeatures):
     features = frozenset({x for x in range(1,numFeatures+1)})
     eval = random_eval()
     print(features, eval)
@@ -40,7 +40,7 @@ def backward_selection(numFeatures):
         print(features, maxVal)
         
 # forward_selection(10)
-backward_selection(10)
+# backward_elimination(10)
 
 
 

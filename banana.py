@@ -9,6 +9,16 @@ def expand_forward(features, numFeatures):
 def expand_backward(features):
     return {frozenset(features - {x}) for x in features}
 
+def pick_best(features):
+    bestFeature = None
+    maxVal = 0
+    for x in features:
+        eval = random_eval()
+        if eval > maxVal:
+            maxVal = eval
+            bestFeature = x
+    return bestFeature, maxVal
+
 
 def random_eval():
     return random.random()
@@ -17,30 +27,16 @@ def forward_selection(numFeatures):
     features = set()
     for i in range(0,numFeatures):
         features = expand_forward(features, numFeatures)
-        maxVal = 0
-        bestFeature = None
-        for x in features:
-            eval = random_eval()
-            if eval > maxVal:
-                maxVal = eval
-                bestFeature = x
-        features = bestFeature
+        features, maxVal = pick_best(features)
         print(features, maxVal)
 
 def backward_selection(numFeatures):
-    features = {x for x in range(1,numFeatures+1)}
+    features = frozenset({x for x in range(1,numFeatures+1)})
     eval = random_eval()
     print(features, eval)
     for i in range(0,numFeatures-1):
         features = expand_backward(features)
-        maxVal = 0
-        bestFeature = None
-        for x in features:
-            eval = random_eval()
-            if eval > maxVal:
-                maxVal = eval
-                bestFeature = x
-        features = bestFeature
+        features, maxVal = pick_best(features)
         print(features, maxVal)
         
 # forward_selection(10)

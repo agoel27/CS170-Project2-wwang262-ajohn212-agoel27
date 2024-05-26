@@ -32,8 +32,8 @@ def random_eval():
 def forward_selection(numFeatures):
     features = set()
     lastAccuracy = random_eval()
-    bestAccuracy = -99
-    bestFeatureSet = None
+    bestAccuracy = lastAccuracy
+    bestFeatureSet = features
     print("\nUsing no features and “random” evaluation, I get an accuracy of {:.1f}%".format(lastAccuracy*100))
     print("\nBeginning search.\n")
     for i in range(0,numFeatures):
@@ -52,13 +52,24 @@ def forward_selection(numFeatures):
 
 def backward_elimination(numFeatures):
     features = frozenset({x for x in range(1,numFeatures+1)})
-    eval = random_eval()
-    print(features, eval)
+    lastAccuracy = random_eval()
+    bestAccuracy = lastAccuracy
+    bestFeatureSet = features
+    print("\nUsing all features and “random” evaluation, I get an accuracy of {:.1f}%".format(lastAccuracy*100))
+    print("\nBeginning search.\n")
+
     for i in range(0,numFeatures-1):
         features = expand_backward(features)
         features, maxVal = pick_best(features)
-        print(features, maxVal)
-        
+        print()
+        if lastAccuracy > maxVal:
+            print("(Warning, Accuracy has decreased!)")
+        print("Feature set {{{}}} was best, accuracy is {:.1f}%\n".format(reg.findall(str(features))[0],maxVal*100))
+        if maxVal > bestAccuracy:
+            bestAccuracy = maxVal
+            bestFeatureSet = features
+        lastAccuracy = maxVal
+    print("Finished search!! The best feature subset is {{{}}}, which has an accuracy of {:.1f}%".format(reg.findall(str(bestFeatureSet))[0],bestAccuracy*100))
 
 
 

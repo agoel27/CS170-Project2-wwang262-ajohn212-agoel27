@@ -11,12 +11,12 @@ class GUI:
 
     def get_numfeatures(this):
         print("Welcome to [Team Names] Feature Selection Algorithm.")
-        print("Please enter total number of features: ") 
+        print("Please enter total number of features: ",end='') 
         return int(input())
     def get_algonum(this):
-        print("Type the number of the algorithm you want to run.")
-        print("1 - Forward Selection")
-        print("2 - Backward Elimination")
+        print("\nType the number of the algorithm you want to run.")
+        print("        1 - Forward Selection")
+        print("        2 - Backward Elimination")
         return int(input())
 
 

@@ -29,6 +29,8 @@ def forward_selection(numFeatures):
 
 def backward_selection(numFeatures):
     features = {x for x in range(1,numFeatures+1)}
+    eval = random_eval()
+    print(features, eval)
     for i in range(0,numFeatures-1):
         features = expand_backward(features)
         maxVal = 0

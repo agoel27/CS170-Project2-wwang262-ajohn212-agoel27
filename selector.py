@@ -1,4 +1,5 @@
 import math
+import time
 
 def remove_items(test_list, item):
     res = [i for i in test_list if i != item]
@@ -47,6 +48,7 @@ class Selector():
         file.close()
 
     def validate(self, datasetNo, list_of_features):
+        curr = time.time()
         list_of_features = [int(i) for i in list_of_features]
         if datasetNo == 1:
             dataset = self.dataset1
@@ -61,6 +63,8 @@ class Selector():
         print("Using features ", list_of_features)
         accuracy = self.validator.validate()
         print("Accuracy: ", accuracy)
+        curr = time.time()-curr
+        print("Time taken to train:", round(curr,4), "s")
 
 class Classifier:
     def __init__(self):
@@ -108,6 +112,7 @@ class Validator:
 
     # Validates the dataset using leave-one-out validation
     def validate(self):
+        curr = time.time()
         test_count = 0
         total = 0
         for i in range(len(self._features)):
@@ -121,4 +126,6 @@ class Validator:
             if test_label == predicted_label:
                 test_count += 1
             total += 1
+        curr = time.time()-curr
+        print("Time taken to validate:", round(curr,4), "s")
         return test_count/total

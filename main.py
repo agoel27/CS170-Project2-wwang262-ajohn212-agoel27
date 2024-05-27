@@ -1,7 +1,6 @@
 import banana
 import selector
 
-
 def remove_items(test_list, item):
     res = [i for i in test_list if i != item]
     return res

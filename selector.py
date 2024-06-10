@@ -17,11 +17,12 @@ def euclidean(feature1, feature2):
 
 class Selector():
     def __init__(self):
-        self.dataset1 = []
-        self.dataset2 = []
+        self.dataset = []
+        #self.dataset2 = []
         self.validator = Validator()
 
-    def load1(self, filename):
+    def load(self, filename):
+        self.dataset = []
         file = open(filename, "r")
         count = 0
         while True:
@@ -31,40 +32,27 @@ class Selector():
                 break
             feature = remove_items(feature, "")
             feature = [float(i) for i in feature]
-            self.dataset1.append(feature)
+            self.dataset.append(feature)
         file.close()
 
-    def load2(self, filename):
-        file = open(filename, "r")
-        count = 0
-        while True:
-            content = file.readline()
-            feature = content.split(" ")
-            if not content:
-                break
-            feature = remove_items(feature, "")
-            feature = [float(i) for i in feature]
-            self.dataset2.append(feature)
-        file.close()
-
-    def validate(self, datasetNo, list_of_features):
+    def validate(self, database_name, list_of_features):
         curr = time.time()
         list_of_features = [int(i) for i in list_of_features]
-        if datasetNo == 1:
-            dataset = self.dataset1
-        else:
-            dataset = self.dataset2
+        self.load(database_name)
+        dataset = self.dataset
         for feature in dataset:
             new_feature = [feature[0]]
             for i in list_of_features:
                 if i != 0:
                     new_feature.append(feature[i])
             self.validator.train(new_feature)
-        print("Using features ", list_of_features)
+        #print("Using features ", list_of_features)
         accuracy = self.validator.validate()
-        print("Accuracy: ", accuracy)
+        self.validator.clear()
+        #print("Accuracy: ", accuracy)
         curr = time.time()-curr
-        print("Time taken to train:", round(curr,4), "s")
+        #print("Time taken to train:", round(curr,4), "s")
+        return accuracy
 
 class Classifier:
     def __init__(self):
@@ -93,8 +81,8 @@ class Classifier:
             if distance < closest_distance:
                 closest = feature_in_features
                 closest_distance = distance
-        print("Instance", test_feature, "is class ", closest[0])
-        print("Its nearest neighbor is ", closest, "which is class", closest[0])
+        # print("Instance", test_feature, "is class ", closest[0])
+        # print("Its nearest neighbor is ", closest, "which is class", closest[0])
         return closest[0]
 
 
@@ -127,5 +115,5 @@ class Validator:
                 test_count += 1
             total += 1
         curr = time.time()-curr
-        print("Time taken to validate:", round(curr,4), "s")
+        # print("Time taken to validate:", round(curr,4), "s")
         return test_count/total

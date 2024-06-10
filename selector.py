@@ -1,5 +1,7 @@
 import math
 import time
+import pandas as pd 
+
 
 def remove_items(test_list, item):
     res = [i for i in test_list if i != item]
@@ -34,6 +36,14 @@ class Selector():
             feature = [float(i) for i in feature]
             self.dataset.append(feature)
         file.close()
+
+        df = pd.DataFrame(self.dataset)
+        for column in df.columns[1:]: 
+            df[column] = df[column]  / df[column].abs().max()
+        
+        print(df.to_string())
+
+        self.dataset = df.values.tolist()
 
     def validate(self, database_name, list_of_features):
         curr = time.time()
